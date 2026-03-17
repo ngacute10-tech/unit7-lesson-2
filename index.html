@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Vocabulary Practice</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f2f6ff;
+text-align:center;
+}
+
+h1{
+color:#2c3e50;
+}
+
+.card{
+background:white;
+width:320px;
+margin:30px auto;
+padding:20px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+img{
+width:180px;
+height:180px;
+object-fit:contain;
+margin:10px;
+}
+
+button{
+padding:10px 15px;
+margin:5px;
+border:none;
+border-radius:8px;
+background:#4CAF50;
+color:white;
+font-size:14px;
+cursor:pointer;
+}
+
+button:hover{
+background:#45a049;
+}
+
+input{
+padding:8px;
+margin-top:10px;
+}
+
+#result{
+font-weight:bold;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>AI Vocabulary Practice</h1>
+
+<div class="card">
+
+<h2 id="word">card</h2>
+
+<p id="ipa">/kɑːrd/</p>
+
+<img id="image"
+src="https://cdn-icons-png.flaticon.com/512/3522/3522188.png">
+
+<br>
+
+<button onclick="speakWord()">🔊 Listen</button>
+
+<button onclick="startSpeech()">🎤 Speak</button>
+
+<br>
+
+<input id="answer" placeholder="Type the word">
+
+<br>
+
+<button onclick="checkAnswer()">Check</button>
+
+<p id="result"></p>
+
+<br>
+
+<button onclick="nextWord()">Next Word ➜</button>
+
+</div>
+
+<script>
+
+const vocab = [
+
+{
+word:"card",
+ipa:"/kɑːrd/",
+image:"images/card.png"
+},
+
+{
+word:"block",
+ipa:"/blɒk/",
+image:"images/block.png"
+},
+
+{
+word:"dice",
+ipa:"/daɪs/",
+image:"images/dice.png"
+},
+
+{
+word:"marble",
+ipa:"/ˈmɑːrbəl/",
+image:"images/marble.png"
+}
+
+];
+
+let index = 0;
+
+function showWord(){
+
+document.getElementById("word").innerText=vocab[index].word;
+
+document.getElementById("ipa").innerText=vocab[index].ipa;
+
+document.getElementById("image").src=vocab[index].image;
+
+document.getElementById("answer").value="";
+
+document.getElementById("result").innerText="";
+
+}
+
+function nextWord(){
+
+index++;
+
+if(index>=vocab.length){
+
+index=0;
+
+}
+
+showWord();
+
+}
+
+function speakWord(){
+
+let word=vocab[index].word;
+
+let speech=new SpeechSynthesisUtterance(word);
+
+speech.lang="en-US";
+
+speechSynthesis.speak(speech);
+
+}
+
+function checkAnswer(){
+
+let input=document.getElementById("answer").value.toLowerCase();
+
+let correct=vocab[index].word;
+
+if(input===correct){
+
+document.getElementById("result").innerText="✅ Correct";
+
+}else{
+
+document.getElementById("result").innerText="❌ Try again";
+
+}
+
+}
+
+function startSpeech(){
+
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+recognition.lang="en-US";
+
+recognition.start();
+
+recognition.onresult=function(event){
+
+let speechResult=event.results[0][0].transcript.toLowerCase();
+
+document.getElementById("answer").value=speechResult;
+
+};
+
+}
+
+</script>
+
+</body>
+</html>
